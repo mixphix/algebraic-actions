@@ -5,13 +5,13 @@ import GHC.TypeNats
 import Linear.Matrix
 import Linear.V
 
-newtype GL n x = GL (V n (V n x))
+newtype SL n x = SL (V n (V n x))
   deriving (Semigroup, Monoid, Functor, Foldable, Traversable)
-instance (KnownNat n, Monoid x, Fractional x) => Group (GL n x) where
-  invert :: (KnownNat n, Monoid x, Fractional x) => GL n x -> GL n x
-  invert (GL mat) = GL (luInvFinite mat)
+instance (KnownNat n, Monoid x, Fractional x) => Group (SL n x) where
+  invert :: (KnownNat n, Monoid x, Fractional x) => SL n x -> SL n x
+  invert (SL mat) = SL (luInvFinite mat)
 
-gl :: (KnownNat n, Fractional x, Eq x) => V n (V n x) -> Maybe (GL n x)
-gl mat = case luDet mat of
-  1 -> Just (GL mat)
+sl :: (KnownNat n, Fractional x, Eq x) => V n (V n x) -> Maybe (SL n x)
+sl mat = case abs (luDet mat) of
+  1 -> Just (SL mat)
   _ -> Nothing
