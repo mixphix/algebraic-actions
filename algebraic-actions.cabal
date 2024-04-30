@@ -25,6 +25,7 @@ library
     LambdaCase
     MultiWayIf
     NoStarIsType
+    OverloadedLists
     OverloadedRecordDot
     PatternSynonyms
     TypeFamilies
@@ -33,11 +34,17 @@ library
     , base >=4.18 && <5
     , group-theory
     , linear
+    , typelits-witnesses
+    , vector
 
   exposed-modules:
     Data.Action
     Group.Cyclic
     Group.Dihedral
-    Group.Linear
     Group.Klein4
+    Group.Linear
     Group.Quaternion
+    Group.Symplectic
+  
+  other-modules:
+    Util

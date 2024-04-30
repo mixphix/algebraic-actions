@@ -7,7 +7,9 @@ import Data.Action
 import Data.Functor (($>))
 import Data.Kind (Type)
 import Data.List (transpose)
-import GHC.TypeNats
+import GHC.TypeLits (KnownNat, type (+))
+import GHC.TypeLits.Witnesses
+import Util (with2n)
 
 type Dihedral :: Natural -> Type
 newtype Dihedral n = Dihedral Natural
@@ -20,22 +22,17 @@ instance (KnownNat n) => Semigroup (Dihedral n) where
     (S i) (R j) -> S (n + i - j)
     (S i) (S j) -> R (n + i - j)
    where
-    n = natVal @n undefined
+    n = fromSNat (SNat @n)
 
-dihedral :: forall (n :: Nat) x. (KnownNat n, Integral x) => x -> Dihedral n
-dihedral i = case natSing @n of
-  SNat ->
-    let l = fromIntegral $ natVal @n undefined
-        i' = i `mod` (2 * l)
-     in Dihedral (fromIntegral i')
+dihedral :: forall n x. (KnownNat n, Integral x) => x -> Dihedral n
+dihedral i = with2n @n do
+  Dihedral $ fromIntegral (i `mod` fromIntegral (fromSNat (SNat @(n + n))))
 
 r :: forall n. (KnownNat n) => Dihedral n -> Maybe Natural
-r (Dihedral n) = case natVal @n undefined of
-  l -> guard (even n) $> fromIntegral ((n `mod` (2 * l)) `div` 2)
+r (Dihedral n) = guard (even n) $> fromIntegral (n `div` 2)
 
 s :: forall n. (KnownNat n) => Dihedral n -> Maybe Natural
-s (Dihedral n) = case natVal @n undefined of
-  l -> guard (odd n) $> fromIntegral (((n - 1) `mod` (2 * l)) `div` 2)
+s (Dihedral n) = guard (odd n) $> fromIntegral (pred n `div` 2)
 
 pattern R :: (KnownNat n) => Natural -> Dihedral n
 pattern R n <- (r -> Just n)
