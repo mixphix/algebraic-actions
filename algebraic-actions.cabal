@@ -45,6 +45,7 @@ library
     Group.Linear
     Group.Quaternion
     Group.Symplectic
+    Group.Versor
   
   other-modules:
     Util
