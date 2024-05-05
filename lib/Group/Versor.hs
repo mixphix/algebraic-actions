@@ -14,7 +14,7 @@ import Linear.V4
 import Linear.Vector ((^*))
 
 newtype Versor n = Versor (V4 n)
-  deriving (Functor, Foldable, Traversable)
+  deriving (Eq, Show, Functor, Foldable, Traversable)
 instance (Num n) => Semigroup (Versor n) where
   (<>) :: (Num n) => Versor n -> Versor n -> Versor n
   Versor (V4 a1 b1 c1 d1) <> Versor (V4 a2 b2 c2 d2) =

@@ -21,6 +21,7 @@ library
     BlockArguments
     DataKinds
     DerivingStrategies
+    DerivingVia
     DuplicateRecordFields
     LambdaCase
     MultiWayIf

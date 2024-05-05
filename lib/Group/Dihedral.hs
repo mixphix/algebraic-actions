@@ -26,7 +26,7 @@ instance (KnownNat n) => Semigroup (Dihedral n) where
 
 dihedral :: forall n x. (KnownNat n, Integral x) => x -> Dihedral n
 dihedral i = with2n @n do
-  Dihedral $ fromIntegral (i `mod` fromIntegral (fromSNat (SNat @(n + n))))
+  Dihedral $ fromIntegral (i `mod` fromIntegral (SNat @(n + n)).nat)
 
 r :: forall n. (KnownNat n) => Dihedral n -> Maybe Natural
 r (Dihedral n) = guard (even n) $> fromIntegral (n `div` 2)
