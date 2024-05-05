@@ -6,6 +6,7 @@ import GHC.TypeLits (KnownNat, type (+), type (*))
 import GHC.TypeLits.Witnesses
 import Data.Vector (Vector)
 import qualified Data.Vector as Vector
+import Data.Group
 
 onVector :: ([x] -> [x]) -> Vector x -> Vector x
 onVector f = Vector.fromList . f . Vector.toList
@@ -23,3 +24,6 @@ withMul r = case SNat @m %* SNat @n of SNat -> r
 
 nat :: forall n i r. (KnownNat n, Integral i) => (i -> r) -> ((KnownNat n) => r)
 nat f = f . fromIntegral $ fromSNat (SNat @n)
+
+(¢) :: (Group g) => g -> g -> g
+g ¢ h = invert g <> invert h <> g <> h

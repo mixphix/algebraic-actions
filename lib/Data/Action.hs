@@ -20,3 +20,5 @@ instance Action x (NonEmpty x) where
 
 actions :: (Foldable t, Action g x) => t g -> (x -> x)
 actions as = \x -> foldl' (flip action) x as
+
+instance (Action h ø) => Action h (ø -> a) where action h f = f . action h

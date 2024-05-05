@@ -31,3 +31,17 @@ permute (V v) = nat @n \n -> do
 
 permute' :: forall n. (KnownNat n) => Vector Int -> Maybe (Permute n)
 permute' v = nat @n \n -> do guard (length v == n) *> permute (V v)
+
+newtype Alternate n = MkAlternate (V n Int) deriving (Eq, Ord, Show)
+pattern Alternate :: (KnownNat n) => Vector Int -> Alternate n
+pattern Alternate p = MkAlternate (V p)
+
+alternate :: forall n. (KnownNat n) => V n Int -> Maybe (Alternate n)
+alternate v = case permute v of p -> guard (p <> p == mempty) $> MkAlternate v
+
+alternate' :: forall n. (KnownNat n) => Vector Int -> Maybe (Alternate n)
+alternate' v = nat @n \n -> do guard (length v == n) *> alternate (V v)
+
+deriving via Permute (n :: Nat) instance (KnownNat n) => Semigroup (Alternate n)
+deriving via Permute (n :: Nat) instance (KnownNat n) => Monoid (Alternate n)
+deriving via Permute (n :: Nat) instance (KnownNat n) => Group (Alternate n)
