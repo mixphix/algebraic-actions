@@ -33,6 +33,8 @@ library
 
   build-depends:
     , base >=4.18 && <5
+    , containers
+    , control-block
     , group-theory
     , linear
     , typelits-witnesses
@@ -45,6 +47,7 @@ library
     Group.Klein4
     Group.Linear
     Group.Quaternion
+    Group.Permute
     Group.Symplectic
     Group.Versor
   
