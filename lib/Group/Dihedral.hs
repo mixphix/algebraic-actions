@@ -6,6 +6,7 @@ import Control.Monad
 import Data.Action
 import Data.Complex
 import Data.Functor (($>))
+import Data.Group
 import Data.List (transpose)
 import GHC.TypeLits (KnownNat)
 import GHC.TypeLits.Witnesses
@@ -23,6 +24,11 @@ instance (KnownNat n) => Semigroup (Dihedral n) where
     (S i) (S j) -> R (n + i - j)
    where
     n = fromSNat (SNat @n)
+instance (KnownNat n) => Monoid (Dihedral n) where mempty = R 0
+instance (KnownNat n) => Group (Dihedral n) where
+  invert = \case
+    R i -> R (negate i)
+    S i -> S i
 
 dihedral :: forall n x. (KnownNat n, Integral x) => x -> Dihedral n
 dihedral i = nat @n \n -> Dihedral $ fromIntegral (mod i (n * 2))
