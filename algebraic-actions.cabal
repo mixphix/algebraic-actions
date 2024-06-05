@@ -44,6 +44,7 @@ library
     Data.Action
     Group.Cyclic
     Group.Dihedral
+    Group.Free
     Group.Klein4
     Group.Linear
     Group.Quaternion
