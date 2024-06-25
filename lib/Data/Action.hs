@@ -4,10 +4,10 @@ import Data.Foldable
 import Data.List.NonEmpty (NonEmpty, (<|))
 
 class Action g x where
-  action :: g -> (x -> x)
+  action :: g -> x -> x
 
 instance (Semigroup g) => Action g g where
-  action :: (Semigroup g) => g -> (g -> g)
+  action :: (Semigroup g) => g -> g -> g
   action = (<>)
 
 instance Action x [x] where
@@ -19,6 +19,8 @@ instance Action x (NonEmpty x) where
   action = (<|)
 
 actions :: (Foldable t, Action g x) => t g -> (x -> x)
-actions as = \x -> foldl' (flip action) x as
+actions = foldl' (\a -> (.) a . action) id
 
-instance (Action h ø) => Action h (ø -> a) where action h f = f . action h
+instance (Action h ø) => Action h (ø -> a) where
+  action :: (Action h ø) => h -> (ø -> a) -> (ø -> a)
+  action h f = f . action h

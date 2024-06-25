@@ -4,9 +4,9 @@ import Control.Block
 import Control.Monad
 import Data.Functor (($>))
 import Data.Group
+import Data.Map qualified as Map
 import Data.Set qualified as Set
 import Data.Vector (Vector, generate, (!))
-import Data.Vector qualified as Vector
 import GHC.TypeLits
 import Linear.V
 import Util
@@ -22,8 +22,7 @@ instance (KnownNat n) => Semigroup (Permute n) where
 instance (KnownNat n) => Monoid (Permute n) where
   mempty = Permute $ nat @n generate id
 instance (KnownNat n) => Group (Permute n) where
-  invert (Permute v) = Permute $ Vector.fromList do
-    snd . unzip . Set.toList $ ireduce v \ix p -> Set.singleton (p, ix)
+  invert (Permute v) = Permute . foldMap pure $ ifoldMap (flip Map.singleton) v
 
 permute :: forall n. (KnownNat n) => V n Int -> Maybe (Permute n)
 permute (V v) = nat @n \n -> do
