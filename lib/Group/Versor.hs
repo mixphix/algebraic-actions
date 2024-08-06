@@ -17,14 +17,12 @@ newtype Versor n = Versor (V4 n)
   deriving (Eq, Show, Functor, Foldable, Traversable)
 instance (Num n) => Semigroup (Versor n) where
   (<>) :: (Num n) => Versor n -> Versor n -> Versor n
-  Versor (V4 a1 b1 c1 d1) <> Versor (V4 a2 b2 c2 d2) =
-    Versor
-      ( V4
-          (a1 * a2 - b1 * b2 - c1 * c2 - d1 * d2)
-          (a1 * b2 + b1 * a2 + c1 * d2 - d1 * c2)
-          (a1 * c2 - b1 * d2 + c1 * a2 + d1 * b2)
-          (a1 * d2 + b1 * c2 - c1 * b2 + d1 * a2)
-      )
+  -- Just so damn cool.
+  Versor (V4 a1 b1 c1 d1) <> Versor (V4 a2 b2 c2 d2) = Versor $ V4
+    do a1 * a2 - b1 * b2 - c1 * c2 - d1 * d2
+    do a1 * b2 + b1 * a2 + c1 * d2 - d1 * c2
+    do a1 * c2 - b1 * d2 + c1 * a2 + d1 * b2
+    do a1 * d2 + b1 * c2 - c1 * b2 + d1 * a2
 instance (Num n) => Monoid (Versor n) where
   mempty :: (Num n) => Versor n
   mempty = Versor (V4 1 0 0 0)
