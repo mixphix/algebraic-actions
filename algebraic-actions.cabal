@@ -45,6 +45,7 @@ library
     Group.Commutator
     Group.Cyclic
     Group.Dihedral
+    Group.F4
     Group.Free
     Group.Klein4
     Group.Linear
