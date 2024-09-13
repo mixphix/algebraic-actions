@@ -48,25 +48,25 @@ instance (Action h ø) => Action h (ø -> a) where
 -- Actions of various semigroups on their base type.
 
 instance Action (First x) x where
-  action :: First x -> x -> x
+  action :: First x -> (x -> x)
   action (First f) = const f
 
 instance Action (Last x) x where
-  action :: Last x -> x -> x
+  action :: Last x -> (x -> x)
   action (Last _) = id
 
 instance (Ord x) => Action (Min x) x where
-  action :: Min x -> x -> x
+  action :: Min x -> (x -> x)
   action (Min x) = min x
 
 instance (Ord x) => Action (Max x) x where
-  action :: Max x -> x -> x
+  action :: Max x -> (x -> x)
   action (Max x) = max x
 
 instance (Num n) => Action (Sum n) n where
-  action :: Sum n -> n -> n
+  action :: Sum n -> (n -> n)
   action (Sum x) y = x + y
 
 instance (Num n) => Action (Product n) n where
-  action :: Product n -> n -> n
+  action :: Product n -> (n -> n)
   action (Product x) y = x * y
