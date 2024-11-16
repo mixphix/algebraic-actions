@@ -11,6 +11,11 @@ import Data.Semigroup
 class Action g x where
   action :: g -> (x -> x)
 
+-- | The trivial action.
+instance Action () x where
+  action :: () -> x -> x
+  action () = id
+
 -- | Semigroups act on themselves.
 instance (Semigroup g) => Action g g where
   action :: g -> (g -> g)
