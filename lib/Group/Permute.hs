@@ -26,7 +26,8 @@ instance (KnownNat n) => Group (Permute n) where
 
 permute :: forall n. (KnownNat n) => V n Int -> Maybe (Permute n)
 permute (V v) = nat @n \n -> do
-  guard (foldMap Set.singleton v == [0 .. n - 1]) $> Permute v
+  guard (foldMap Set.singleton v == Set.fromDistinctAscList [0 .. n - 1])
+  pure (Permute v)
 
 permute' :: forall n. (KnownNat n) => Vector Int -> Maybe (Permute n)
 permute' v = nat @n \n -> do guard (length v == n) *> permute (V v)
